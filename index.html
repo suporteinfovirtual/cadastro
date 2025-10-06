@@ -3,664 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Cliente - Clube da Padoca</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FF9933 0%, #FFB84D 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
-            text-align: center;
-        }
-
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .required {
-            color: #FF6B35;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #FF9933;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.1);
-        }
-
-        input.error {
-            border-color: #FF6B35;
-            background: #ffe6e6;
-        }
-
-        input.success {
-            border-color: #4CAF50;
-            background: #e6ffe6;
-        }
-
-        .error-message {
-            color: #FF6B35;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .address-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #FF9933 0%, #FFB84D 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #FF9933;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Modal de Sucesso */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 50px 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            animation: scaleIn 0.5s ease-out;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: bounce 1s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .modal-title {
-            font-size: 24px;
-            color: #FF9933;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .modal-message {
-            font-size: 18px;
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .modal-button {
-            background: linear-gradient(135deg, #FF9933 0%, #FFB84D 100%);
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .modal-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.3);
-        }
-
-        .error-alert {
-            background: #ffe6e6;
-            border: 1px solid #FF6B35;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .error-alert.show {
-            display: block;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 25px;
-            }
-
-            .address-grid {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .modal-content {
-                padding: 40px 25px;
-            }
-
-            .modal-icon {
-                font-size: 60px;
-            }
-
-            .modal-title {
-                font-size: 20px;
-            }
-
-            .modal-message {
-                font-size: 16px;
-            }
-        }
-    </style>
+    <title>Formulário com Webhook</title>
 </head>
 <body>
-    <div class="container">
-        <h1>🥐 Clube da Padoca</h1>
-        <p class="subtitle">Preencha todos os campos para completar o cadastro</p>
+    <form id="meuFormulario">
+        <label>Nome Completo:</label>
+        <input type="text" id="nomeCompleto" required><br><br>
 
-        <form id="clientForm">
-            <!-- Nome Completo -->
-            <div class="form-group">
-                <label for="nomeCompleto">Nome Completo <span class="required">*</span></label>
-                <input type="text" id="nomeCompleto" name="nomeCompleto" required>
-                <div class="error-message" id="nomeError">Por favor, insira o nome completo</div>
-            </div>
+        <label>CPF:</label>
+        <input type="text" id="cpf" placeholder="000.000.000-00" required><br><br>
 
-            <!-- CPF -->
-            <div class="form-group">
-                <label for="cpf">CPF <span class="required">*</span></label>
-                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" required>
-                <div class="error-message" id="cpfError">CPF inválido</div>
-            </div>
+        <label>Telefone:</label>
+        <input type="text" id="telefone" placeholder="(00) 00000-0000" required><br><br>
 
-            <!-- Telefone -->
-            <div class="form-group">
-                <label for="telefone">Telefone <span class="required">*</span></label>
-                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
-                <div class="error-message" id="telefoneError">Telefone inválido</div>
-            </div>
+        <label>CEP:</label>
+        <input type="text" id="cep" placeholder="00000-000" required><br><br>
 
-            <!-- Endereço -->
-            <div class="form-group">
-                <label for="cep">CEP <span class="required">*</span></label>
-                <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" required>
-                <div class="error-message" id="cepError">CEP inválido</div>
-            </div>
+        <label>Logradouro:</label>
+        <input type="text" id="logradouro" required><br><br>
 
-            <div class="address-grid">
-                <div class="form-group full-width">
-                    <label for="logradouro">Logradouro <span class="required">*</span></label>
-                    <input type="text" id="logradouro" name="logradouro" required>
-                </div>
+        <label>Número:</label>
+        <input type="text" id="numero" required><br><br>
 
-                <div class="form-group">
-                    <label for="numero">Número <span class="required">*</span></label>
-                    <input type="text" id="numero" name="numero" required>
-                </div>
+        <label>Complemento:</label>
+        <input type="text" id="complemento"><br><br>
 
-                <div class="form-group">
-                    <label for="complemento">Complemento</label>
-                    <input type="text" id="complemento" name="complemento">
-                </div>
+        <label>Bairro:</label>
+        <input type="text" id="bairro" required><br><br>
 
-                <div class="form-group">
-                    <label for="bairro">Bairro <span class="required">*</span></label>
-                    <input type="text" id="bairro" name="bairro" required>
-                </div>
+        <label>Cidade:</label>
+        <input type="text" id="cidade" required><br><br>
 
-                <div class="form-group">
-                    <label for="cidade">Cidade <span class="required">*</span></label>
-                    <input type="text" id="cidade" name="cidade" required>
-                </div>
+        <label>Estado:</label>
+        <input type="text" id="estado" maxlength="2" required><br><br>
 
-                <div class="form-group">
-                    <label for="estado">Estado <span class="required">*</span></label>
-                    <input type="text" id="estado" name="estado" placeholder="UF" maxlength="2" required>
-                </div>
-            </div>
-
-            <button type="submit" id="submitBtn">Cadastrar Cliente</button>
-        </form>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p style="margin-top: 10px; color: #666;">Enviando dados...</p>
-        </div>
-
-        <div class="error-alert" id="errorAlert">
-            ❌ Erro ao cadastrar cliente. Por favor, tente novamente.
-        </div>
-    </div>
-
-    <!-- Modal de Sucesso -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-icon">🎉</div>
-            <div class="modal-title">Clube da Padoca agradece a preferência!</div>
-            <div class="modal-message">cadastro efetuado com sucesso! ✨</div>
-            <button class="modal-button" onclick="closeModal()">Fechar</button>
-        </div>
-    </div>
+        <button type="submit">Enviar</button>
+    </form>
 
     <script>
-        // Máscaras de formatação
-        function formatCPF(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-                .replace(/(-\d{2})\d+?$/, '$1');
-        }
-
-        function formatCEP(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{5})(\d)/, '$1-$2')
-                .replace(/(-\d{3})\d+?$/, '$1');
-        }
-
-        function formatTelefone(value) {
-            value = value.replace(/\D/g, '');
-            
-            if (value.length <= 10) {
-                // Formato: (00) 0000-0000
-                return value
-                    .replace(/(\d{2})(\d)/, '($1) $2')
-                    .replace(/(\d{4})(\d)/, '$1-$2')
-                    .replace(/(-\d{4})\d+?$/, '$1');
-            } else {
-                // Formato: (00) 00000-0000
-                return value
-                    .replace(/(\d{2})(\d)/, '($1) $2')
-                    .replace(/(\d{5})(\d)/, '$1-$2')
-                    .replace(/(-\d{4})\d+?$/, '$1');
-            }
-        }
-
-        // Validação de CPF
-        function validarCPF(cpf) {
-            cpf = cpf.replace(/\D/g, '');
-            
-            if (cpf.length !== 11) return false;
-            
-            // Verifica se todos os dígitos são iguais
-            if (/^(\d)\1{10}$/.test(cpf)) return false;
-            
-            // Validação do primeiro dígito verificador
-            let soma = 0;
-            for (let i = 0; i < 9; i++) {
-                soma += parseInt(cpf.charAt(i)) * (10 - i);
-            }
-            let resto = 11 - (soma % 11);
-            let digitoVerificador1 = resto >= 10 ? 0 : resto;
-            
-            if (digitoVerificador1 !== parseInt(cpf.charAt(9))) return false;
-            
-            // Validação do segundo dígito verificador
-            soma = 0;
-            for (let i = 0; i < 10; i++) {
-                soma += parseInt(cpf.charAt(i)) * (11 - i);
-            }
-            resto = 11 - (soma % 11);
-            let digitoVerificador2 = resto >= 10 ? 0 : resto;
-            
-            if (digitoVerificador2 !== parseInt(cpf.charAt(10))) return false;
-            
-            return true;
-        }
-
-        // Validação de telefone
-        function validarTelefone(telefone) {
-            telefone = telefone.replace(/\D/g, '');
-            return telefone.length === 10 || telefone.length === 11;
-        }
-
-        // Event listeners para máscaras
-        const cpfInput = document.getElementById('cpf');
-        const cepInput = document.getElementById('cep');
-        const telefoneInput = document.getElementById('telefone');
-        const estadoInput = document.getElementById('estado');
-
-        cpfInput.addEventListener('input', function(e) {
-            e.target.value = formatCPF(e.target.value);
-        });
-
-        cepInput.addEventListener('input', function(e) {
-            e.target.value = formatCEP(e.target.value);
-        });
-
-        telefoneInput.addEventListener('input', function(e) {
-            e.target.value = formatTelefone(e.target.value);
-        });
-
-        estadoInput.addEventListener('input', function(e) {
-            e.target.value = e.target.value.toUpperCase();
-        });
-
-        // Validação em tempo real do CPF
-        cpfInput.addEventListener('blur', function() {
-            const cpfError = document.getElementById('cpfError');
-            if (this.value && !validarCPF(this.value)) {
-                this.classList.add('error');
-                this.classList.remove('success');
-                cpfError.classList.add('show');
-            } else if (this.value) {
-                this.classList.remove('error');
-                this.classList.add('success');
-                cpfError.classList.remove('show');
-            }
-        });
-
-        // Validação em tempo real do telefone
-        telefoneInput.addEventListener('blur', function() {
-            const telefoneError = document.getElementById('telefoneError');
-            if (this.value && !validarTelefone(this.value)) {
-                this.classList.add('error');
-                this.classList.remove('success');
-                telefoneError.classList.add('show');
-            } else if (this.value) {
-                this.classList.remove('error');
-                this.classList.add('success');
-                telefoneError.classList.remove('show');
-            }
-        });
-
-        // Buscar endereço pelo CEP
-        cepInput.addEventListener('blur', async function() {
-            const cep = this.value.replace(/\D/g, '');
-            if (cep.length === 8) {
-                try {
-                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                    const data = await response.json();
-                    
-                    if (!data.erro) {
-                        document.getElementById('logradouro').value = data.logradouro || '';
-                        document.getElementById('bairro').value = data.bairro || '';
-                        document.getElementById('cidade').value = data.localidade || '';
-                        document.getElementById('estado').value = data.uf || '';
-                        document.getElementById('numero').focus();
-                    }
-                } catch (error) {
-                    console.log('Erro ao buscar CEP:', error);
-                }
-            }
-        });
-
-        // Função para fechar o modal
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
-        }
-
-        // Submissão do formulário
-        document.getElementById('clientForm').addEventListener('submit', async function(e) {
+        document.getElementById("meuFormulario").addEventListener("submit", async function(e) {
             e.preventDefault();
 
-            // Validações
-            const nomeCompleto = document.getElementById('nomeCompleto').value.trim();
-            const cpf = document.getElementById('cpf').value;
-            const telefone = document.getElementById('telefone').value;
-            
-            let isValid = true;
+            const nomeCompleto = document.getElementById("nomeCompleto").value.trim();
+            const cpf = document.getElementById("cpf").value.trim(); // mantém pontos e hífen
+            const telefone = document.getElementById("telefone").value.trim();
 
-            // Validar nome
-            if (!nomeCompleto || nomeCompleto.split(' ').length < 2) {
-                document.getElementById('nomeCompleto').classList.add('error');
-                document.getElementById('nomeError').classList.add('show');
-                isValid = false;
-            } else {
-                document.getElementById('nomeCompleto').classList.remove('error');
-                document.getElementById('nomeError').classList.remove('show');
-            }
+            // garante que o telefone sempre tenha o 0 na frente
+            let telefoneComZero = telefone.startsWith("0") ? telefone : "0" + telefone;
 
-            // Validar CPF
-            if (!validarCPF(cpf)) {
-                document.getElementById('cpf').classList.add('error');
-                document.getElementById('cpfError').classList.add('show');
-                isValid = false;
-            } else {
-                document.getElementById('cpf').classList.remove('error');
-                document.getElementById('cpfError').classList.remove('show');
-            }
-
-            // Validar telefone
-            if (!validarTelefone(telefone)) {
-                document.getElementById('telefone').classList.add('error');
-                document.getElementById('telefoneError').classList.add('show');
-                isValid = false;
-            } else {
-                document.getElementById('telefone').classList.remove('error');
-                document.getElementById('telefoneError').classList.remove('show');
-            }
-
-            if (!isValid) return;
-
-            // Preparar telefone com zero na frente
-            const telefoneNumeros = telefone.replace(/\D/g, '');
-            const telefoneComZero = '0' + telefoneNumeros;
-
-            // Preparar dados para envio
             const formData = {
                 nomeCompleto: nomeCompleto,
-                cpf: cpf.replace(/\D/g, ''),
+                cpf: cpf,   // mantém formatado
                 telefone: telefoneComZero,
                 endereco: {
-                    cep: document.getElementById('cep').value.replace(/\D/g, ''),
-                    logradouro: document.getElementById('logradouro').value.trim(),
-                    numero: document.getElementById('numero').value.trim(),
-                    complemento: document.getElementById('complemento').value.trim(),
-                    bairro: document.getElementById('bairro').value.trim(),
-                    cidade: document.getElementById('cidade').value.trim(),
-                    estado: document.getElementById('estado').value.trim().toUpperCase()
+                    cep: document.getElementById("cep").value.replace(/\D/g, ''), // CEP só números
+                    logradouro: document.getElementById("logradouro").value.trim(),
+                    numero: document.getElementById("numero").value.trim(),
+                    complemento: document.getElementById("complemento").value.trim(),
+                    bairro: document.getElementById("bairro").value.trim(),
+                    cidade: document.getElementById("cidade").value.trim(),
+                    estado: document.getElementById("estado").value.trim().toUpperCase()
                 }
             };
 
-            // Mostrar loading
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('loading').classList.add('show');
-            document.getElementById('errorAlert').classList.remove('show');
-
             try {
-                // Enviar para webhook
-                const response = await fetch('https://23a1692e7f2c.ngrok-free.app/webhook-test/743cd930-32b2-45bd-a26a-9ab560d95721', {
-                    method: 'POST',
+                const response = await fetch("SUA_URL_DO_WEBHOOK_AQUI", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify(formData)
                 });
 
                 if (response.ok) {
-                    // Sucesso - mostrar modal
-                    document.getElementById('modalOverlay').classList.add('show');
-                    document.getElementById('clientForm').reset();
-                    
-                    // Remover classes de validação
-                    document.querySelectorAll('input').forEach(input => {
-                        input.classList.remove('success', 'error');
-                    });
+                    alert("Formulário enviado com sucesso!");
                 } else {
-                    throw new Error('Erro na resposta do servidor');
+                    alert("Erro ao enviar formulário.");
                 }
             } catch (error) {
-                console.error('Erro ao enviar dados:', error);
-                document.getElementById('errorAlert').classList.add('show');
-            } finally {
-                document.getElementById('loading').classList.remove('show');
-                document.getElementById('submitBtn').disabled = false;
-            }
-        });
-
-        // Fechar modal ao clicar fora dele
-        document.getElementById('modalOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
+                alert("Erro de conexão: " + error.message);
             }
         });
     </script>
