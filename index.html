@@ -339,7 +339,7 @@
 
             <div class="form-group">
                 <label for="telefone">Telefone <span class="required">*</span></label>
-                <input type="text" id="telefone" name="telefone" placeholder="(0xx47)99704-3703" maxlength="17" required>
+                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
                 <div class="error-message" id="telefoneError">Telefone inválido</div>
             </div>
 
@@ -425,15 +425,15 @@
             value = value.replace(/\D/g, '');
             
             if (value.length <= 10) {
-                // Formato: (0xx) 0000-0000
+                // Formato: (00) 0000-0000
                 return value
-                    .replace(/(\d{3})(\d)/, '($1) $2')
+                    .replace(/(\d{2})(\d)/, '($1) $2')
                     .replace(/(\d{4})(\d)/, '$1-$2')
                     .replace(/(-\d{4})\d+?$/, '$1');
             } else {
-                // Formato: (0xx) 00000-0000
+                // Formato: (00) 00000-0000
                 return value
-                    .replace(/(\d{3})(\d)/, '($1) $2')
+                    .replace(/(\d{2})(\d)/, '($1) $2')
                     .replace(/(\d{5})(\d)/, '$1-$2')
                     .replace(/(-\d{4})\d+?$/, '$1');
             }
@@ -596,7 +596,7 @@
 
             if (!isValid) return;
 
-            // Preparar telefone no formato (0xx47)99704-3703
+            // Preparar telefone no formato (0xx47)99704-3703 para envio ao banco
             const telefoneNumeros = telefone.replace(/\D/g, '');
             let telefoneFinal = '';
             
