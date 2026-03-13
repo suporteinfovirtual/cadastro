@@ -339,7 +339,7 @@
 
             <div class="form-group">
                 <label for="telefone">Telefone <span class="required">*</span></label>
-                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
+                <input type="text" id="telefone" name="telefone" placeholder="(0xx47)99704-3703" maxlength="17" required>
                 <div class="error-message" id="telefoneError">Telefone inválido</div>
             </div>
 
@@ -425,15 +425,15 @@
             value = value.replace(/\D/g, '');
             
             if (value.length <= 10) {
-                // Formato: (00) 0000-0000
+                // Formato: (0xx) 0000-0000
                 return value
-                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{3})(\d)/, '($1) $2')
                     .replace(/(\d{4})(\d)/, '$1-$2')
                     .replace(/(-\d{4})\d+?$/, '$1');
             } else {
-                // Formato: (00) 00000-0000
+                // Formato: (0xx) 00000-0000
                 return value
-                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{3})(\d)/, '($1) $2')
                     .replace(/(\d{5})(\d)/, '$1-$2')
                     .replace(/(-\d{4})\d+?$/, '$1');
             }
@@ -596,15 +596,23 @@
 
             if (!isValid) return;
 
-            // Preparar telefone com zero na frente
+            // Preparar telefone no formato (0xx47)99704-3703
             const telefoneNumeros = telefone.replace(/\D/g, '');
-            const telefoneComZero = '0' + telefoneNumeros;
+            let telefoneFinal = '';
+            
+            if (telefoneNumeros.length === 10) {
+                // Formato: (0xx) 0000-0000
+                telefoneFinal = `(0${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 6)}-${telefoneNumeros.substring(6)}`;
+            } else if (telefoneNumeros.length === 11) {
+                // Formato: (0xx) 00000-0000
+                telefoneFinal = `(0${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 7)}-${telefoneNumeros.substring(7)}`;
+            }
 
             // Preparar dados para envio
             const formData = {
                 nomeCompleto: nomeCompleto,
-                cpf: cpf, // <<-- ÚNICA ALTERAÇÃO FEITA AQUI
-                telefone: telefoneComZero,
+                cpf: cpf,
+                telefone: telefoneFinal,
                 endereco: {
                     cep: document.getElementById('cep').value.replace(/\D/g, ''),
                     logradouro: document.getElementById('logradouro').value.trim(),
