@@ -602,10 +602,10 @@
             
             if (telefoneNumeros.length === 10) {
                 // Formato: (0xx) 0000-0000
-                telefoneFinal = `(0${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 6)}-${telefoneNumeros.substring(6)}`;
+                telefoneFinal = `(0xx${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 6)}-${telefoneNumeros.substring(6)}`;
             } else if (telefoneNumeros.length === 11) {
                 // Formato: (0xx) 00000-0000
-                telefoneFinal = `(0${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 7)}-${telefoneNumeros.substring(7)}`;
+                telefoneFinal = `(0xx${telefoneNumeros.substring(0, 2)})${telefoneNumeros.substring(2, 7)}-${telefoneNumeros.substring(7)}`;
             }
 
             // Preparar dados para envio
